@@ -17,7 +17,8 @@
   },
   "scripts": {
     "lint": "eslint *.js",
-    "test": "npm -s run-script lint && mocha --reporter spec test/"
+    "test": "npm -s run-script lint && mocha --reporter spec test/",
+    "package-for-deploy" : "rm -rf node_modules/ && npm install async config underscore && zip -v -r -9 rotate.snapshot.zip  *"
   },
   "repository": {
     "type": "git",
