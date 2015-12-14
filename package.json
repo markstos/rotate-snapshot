@@ -5,8 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "async": "~1.5.0",
-    "underscore": "~1.8.3",
-    "aws-sdk": "^2.2.13"
+    "aws-sdk": "^2.2.13",
+    "config": "^1.17.1",
+    "underscore": "~1.8.3"
   },
   "devDependencies": {
     "mocha": "^2.3.3",
@@ -30,13 +31,27 @@
   "homepage": "https://github.com/szkkentaro/rotate-snapshot",
   "eslintConfig": {
     "rules": {
-        "no-console": 0,
-        "indent": [ 2, 2 ],
-        "quotes": [ 2, "double" ],
-        "linebreak-style": [ 2, "unix" ],
-        "semi": [ 2, "always" ]
+      "no-console": 0,
+      "indent": [
+        2,
+        2
+      ],
+      "quotes": [
+        2,
+        "double"
+      ],
+      "linebreak-style": [
+        2,
+        "unix"
+      ],
+      "semi": [
+        2,
+        "always"
+      ]
     },
-    "env": { "node": true },
+    "env": {
+      "node": true
+    },
     "extends": "eslint:recommended"
   }
 }
