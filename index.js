@@ -1,6 +1,10 @@
-var aws   = require("aws-sdk")
-  , _     = require("underscore")
-  , async = require("async")
+
+process.env.NODE_CONFIG_DIR="/var/task/config";
+
+var aws    = require("aws-sdk")
+  , _      = require("underscore")
+  , async  = require("async")
+  , config = require("config")
   , ec2   = new aws.EC2({apiVersion: "2015-10-01"})
   ;
 
@@ -32,20 +36,21 @@ var iterator = function(params, callback) {
   });
 };
 
-exports.handler = function(event, context) {
+exports.handler = function(ignored, context) {
+
   // validate event
-  if (!event.hasOwnProperty("filters")) {
-    return context.done("event.filters is require.");
+  if (!config.has("filters")) {
+    return context.done("config.filters is required.");
   }
-  if (!event.hasOwnProperty("dryRun")) {
-    return context.done("event.dryRun is require.");
+  if (!config.has("dryRun")) {
+    return context.done("config.dryRun is required.");
   }
-  if (!event.hasOwnProperty("rotate")) {
-    return context.done("event.rotate is require.");
+  if (!config.has("rotate")) {
+    return context.done("config.rotate is require.");
   }
 
   // params
-  var params = { DryRun: false, Filters: event.filters };
+  var params = { DryRun: false, Filters: config.get('filters') };
 
   // describe snapshots and delete them.
   ec2.describeSnapshots(params, function(err, data) {
@@ -54,14 +59,14 @@ exports.handler = function(event, context) {
     }
 
     // find snapshot ids to delete
-    var snapshotIds = delList(data.Snapshots, event.rotate);
+    var snapshotIds = delList(data.Snapshots, config.get('rotate'));
     if (+snapshotIds.length == 0) {
       console.log("Do nothing. There is no snapshot to delete.");
       return context.succeed();
     }
 
     // delete snapshots
-    var params = delParams(snapshotIds, event.dryRun);
+    var params = delParams(snapshotIds, config.get("dryRun"));
     async.map(params, iterator, function(err, results) {
       return context.done(err, results);
     });
