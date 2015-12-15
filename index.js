@@ -11,9 +11,10 @@ var delList = function(snapshots, rotate) {
           .value();
 };
 
+// Description, Tags and StartTime are selected only to provide better DryRun output
 var delParams = function(snapshots, dryRun) {
   return _.chain(snapshots)
-          .map(function(o) { return _.pick(o, "SnapshotId"); })
+          .map(function(o) { return _.pick(o, "SnapshotId", "Description", "Tags", "StartTime"); })
           .map(function(o) { return _.extend(o, { DryRun: dryRun }); })
           .value();
 };
@@ -21,7 +22,7 @@ var delParams = function(snapshots, dryRun) {
 // async map iterator
 var iterator = function(params, callback) {
   console.log("Deleted snapshotId : ", params);
-  ec2.deleteSnapshot(params, function(err, data) {
+  ec2.deleteSnapshot(_.pick(params, "SnapshotId", "DryRun"), function(err, data) {
     if (err) {
       if (err.hasOwnProperty("code") && err.code == "DryRunOperation") {
         data = err;
