@@ -116,3 +116,4 @@ Filterd snapshots are hold up to `rotate` number.
 ## See Also
 
  * [Official Docs: Programming Model for Authoring Lambda Functions in Node.js](http://docs.aws.amazon.com/lambda/latest/dg/programming-model.html)
+ * [SnapshotExpirationUtility](https://github.com/tangerinedream/SnapshotExpirationUtility) is a Python project with similar goals
